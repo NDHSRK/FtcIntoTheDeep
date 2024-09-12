@@ -5,6 +5,7 @@ import static org.firstinspires.ftc.teamcode.auto.vision.AprilTagUtils.AprilTagI
 
 import android.annotation.SuppressLint;
 
+import com.acmerobotics.roadrunner.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.RobotLog;
@@ -19,6 +20,7 @@ import org.firstinspires.ftc.teamcode.auto.vision.AprilTagUtils;
 import org.firstinspires.ftc.teamcode.common.RobotConstants;
 import org.firstinspires.ftc.teamcode.common.RobotConstantsCurrentGame;
 import org.firstinspires.ftc.teamcode.common.RobotLogCommon;
+import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
 import org.firstinspires.ftc.teamcode.robot.FTCRobot;
 import org.firstinspires.ftc.teamcode.robot.device.camera.AprilTagAccess;
 import org.firstinspires.ftc.teamcode.robot.device.camera.RawFrameProcessor;
@@ -59,6 +61,7 @@ public class FTCAuto {
     private final int autoStartDelay;
     private final RobotActionXML actionXML;
     private final RobotActionXML.RobotActionData actionData;
+    private final MecanumDrive roadrunnerDrive;
 
     private enum ActionStatus {
         NO_ACTIONS_TAKEN, OPMODE_INACTIVE, OPMODE_TIMEOUT,
@@ -105,11 +108,12 @@ public class FTCAuto {
         // If a drive train is part of the current configuration, initialize Roadrunner.
         if (robot.roadrunnerDriveTrainInConfiguration) {
             if (actionData.startingPositionData == null)
-                throw new AutonomousRobotException(TAG, "Missing Roadruuner initial pose");
-            //**TODO Change MecanumDrive to accept the String identifiers of the 4 drive motors.
-            //**TODO class field MecanumDrive roadrunnerDrive = new MecanumDrive(hardwareMap, new Pose2d(actionData.startingPositionData.x,
-            // actionData.startingPositionData.y, Math.toRadians(actionData.startingPositionData.angle)));
-        }
+                throw new AutonomousRobotException(TAG, "Missing Roadrunner initial pose");
+
+            roadrunnerDrive = new MecanumDrive(pLinearOpMode.hardwareMap, new Pose2d(actionData.startingPositionData.x,
+                    actionData.startingPositionData.y, Math.toRadians(actionData.startingPositionData.angle)));
+        } else
+            roadrunnerDrive = null;
 
         // Start the front webcam with the raw webcam frame processor.
         // We can start a camera by using the <START_CAMERA> action in RobotAction.xml

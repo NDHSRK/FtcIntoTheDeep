@@ -35,7 +35,12 @@ public class FTCRobot {
     private static final String TAG = FTCRobot.class.getSimpleName();
 
     // XML element names in RobotConfig.xml
-    public static final String DRIVE_TRAIN_ELEMENT_NAME = "DRIVE_TRAIN"; //**TODO - all elements
+    public static final String DRIVE_TRAIN_ELEMENT_NAME = "DRIVE_TRAIN";
+    public static final String TELEOP_SETTINGS_ELEMENT_NAME = "TELEOP_SETTINGS";
+    public static final String ELEVATOR_ELEMENT_NAME = "ELEVATOR";
+    public static final String INTAKE_ELEMENT_NAME = "INTAKE";
+    public static final String DRONE_LAUNCHER_ELEMENT_NAME = "DRONE_LAUNCHER";
+    public static final String VISION_PORTAL_WEBCAM_ELEMENT_NAME = "VISION_PORTAL_WEBCAM";
 
     // All motors on the robot for this year's game.
     public enum MotorId {
@@ -123,7 +128,7 @@ public class FTCRobot {
                     roadrunnerDriveTrainInConfiguration = false;
                     driveTrainDeviceNames = null;
 
-                    XPathAccess teleOpSettingsXPath = configXML.getPath("TELEOP_SETTINGS");
+                    XPathAccess teleOpSettingsXPath = configXML.getPath(TELEOP_SETTINGS_ELEMENT_NAME);
                     String logging_level = teleOpSettingsXPath.getRequiredTextInRange("log_level", teleOpSettingsXPath.validRange("d", "v", "vv", "off"));
                     double driveTrainPowerHigh = teleOpSettingsXPath.getRequiredDouble("drive_train_power/high");
                     double driveTrainPowerLow = teleOpSettingsXPath.getRequiredDouble("drive_train_power/low");
@@ -150,10 +155,10 @@ public class FTCRobot {
             }
 
             // Get the configuration for the dual-motor elevator.
-            configXPath = configXML.getPath("ELEVATOR");
+            configXPath = configXML.getPath(ELEVATOR_ELEMENT_NAME);
             String elevatorInConfiguration = configXPath.getRequiredTextInRange("@configured", configXPath.validRange("yes", "no"));
             if (elevatorInConfiguration.equals("yes")) {
-                elevator = new Elevator(hardwareMap, configXPath, "ELEVATOR");
+                elevator = new Elevator(hardwareMap, configXPath, ELEVATOR_ELEMENT_NAME);
                 elevatorMotion = new ElevatorMotion(pLinearOpMode, elevator);
             } else {
                 elevator = null;
@@ -161,10 +166,10 @@ public class FTCRobot {
             }
 
             // Get the configuration for pixel intake/outtake.
-            configXPath = configXML.getPath("INTAKE");
+            configXPath = configXML.getPath(INTAKE_ELEMENT_NAME);
             String intakeInConfiguration = configXPath.getRequiredTextInRange("@configured", configXPath.validRange("yes", "no"));
             if (intakeInConfiguration.equals("yes")) {
-                intake = new Intake(hardwareMap, configXPath, "INTAKE");
+                intake = new Intake(hardwareMap, configXPath, INTAKE_ELEMENT_NAME);
                 intakeMotion = new SingleMotorMotion(pLinearOpMode, intake);
             } else {
                 intake = null;
@@ -172,10 +177,10 @@ public class FTCRobot {
             }
 
             // Get the configuration for the drone launcher servo.
-            configXPath = configXML.getPath("DRONE_LAUNCHER");
+            configXPath = configXML.getPath(DRONE_LAUNCHER_ELEMENT_NAME);
             String launcherConfiguration = configXPath.getRequiredTextInRange("@configured", configXPath.validRange("yes", "no"));
             if (launcherConfiguration.equals("yes")) {
-                droneLauncherServo = new DroneLauncherServo(hardwareMap, configXPath, "DRONE_LAUNCHER", ServoId.DRONE_LAUNCHER);
+                droneLauncherServo = new DroneLauncherServo(hardwareMap, configXPath, DRONE_LAUNCHER_ELEMENT_NAME, ServoId.DRONE_LAUNCHER);
             } else {
                 droneLauncherServo = null;
             }
@@ -188,7 +193,7 @@ public class FTCRobot {
             } else {
                 // Any configured VisionPortal webcams?
                 EnumMap<RobotConstantsCurrentGame.InternalWebcamId, VisionPortalWebcamConfiguration.ConfiguredWebcam> configuredWebcamsLocal;
-                configXPath = configXML.getPath("VISION_PORTAL_WEBCAM");
+                configXPath = configXML.getPath(VISION_PORTAL_WEBCAM_ELEMENT_NAME);
                 String webcamYesNo = configXPath.getRequiredTextInRange("@configured", configXPath.validRange("yes", "no"));
                 RobotLogCommon.c(TAG, "VisionPortal webcam configuration option: " + webcamYesNo);
 
@@ -214,7 +219,7 @@ public class FTCRobot {
 
     public static DriveTrainDeviceNames getDriveTrainDeviceNames() {
         return driveTrainDeviceNames;
-    };
+    }
 
     // The FTC SDK uses a string such as "Webcam 1" to connect
     // a webcam via the HardwareMap and to create a WebcamName

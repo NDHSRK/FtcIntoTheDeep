@@ -251,14 +251,14 @@ public class RobotActionXML {
 
     public static class StartingPositionData {
 
-        public final double startingX; // FTC field coordinates
-        public final double startingY; // FTC field coordinates
-        public final double startingAngle; // with respect to the wall
+        public final double x; // FTC field coordinates
+        public final double y; // FTC field coordinates
+        public final double angle; // with respect to the wall
 
         public StartingPositionData(double pStartingX, double pStartingY, double pStartingAngle) {
-            startingX = pStartingX;
-            startingY = pStartingY;
-            startingAngle = pStartingAngle;
+            x = pStartingX;
+            y = pStartingY;
+            angle = pStartingAngle;
         }
     }
 
