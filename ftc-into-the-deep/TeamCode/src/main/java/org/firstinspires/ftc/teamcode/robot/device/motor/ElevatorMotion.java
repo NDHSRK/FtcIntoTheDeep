@@ -95,10 +95,10 @@ public class ElevatorMotion {
                 // Log ending click counts for both motors.
                 RobotLogCommon.d(TAG, "Elevator motion complete");
                 EnumMap<FTCRobot.MotorId, Integer> elevatorMotorPositions = elevator.getCurrentPositions();
-                RobotLogCommon.d(TAG, "Elevator motor " + FTCRobot.MotorId.ELEVATOR_LEFT +
-                        " ending position " + elevatorMotorPositions.get(FTCRobot.MotorId.ELEVATOR_LEFT));
-                RobotLogCommon.d(TAG, "Elevate motor " + FTCRobot.MotorId.ELEVATOR_RIGHT +
-                        " ending position " + elevatorMotorPositions.get(FTCRobot.MotorId.ELEVATOR_RIGHT));
+                RobotLogCommon.d(TAG, "Elevator motor " + FTCRobot.MotorId.LEFT_ELEVATOR +
+                        " ending position " + elevatorMotorPositions.get(FTCRobot.MotorId.LEFT_ELEVATOR));
+                RobotLogCommon.d(TAG, "Elevate motor " + FTCRobot.MotorId.RIGHT_ELEVATOR +
+                        " ending position " + elevatorMotorPositions.get(FTCRobot.MotorId.RIGHT_ELEVATOR));
             }
         }
     }
@@ -106,8 +106,8 @@ public class ElevatorMotion {
     // Move both motors downward until they each trip their respective magnetic switch.
     public void moveElevatorMotorsDownToMagneticLimit(TouchSensor pLeftSwitch, TouchSensor pRightSwitch, double pVelocity) {
         elevator.setRunModeAll(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        RobotLogCommon.d(TAG, "Moving elevator motors " + FTCRobot.MotorId.ELEVATOR_LEFT + ", " +
-                FTCRobot.MotorId.ELEVATOR_RIGHT + " down to their magnetic limit");
+        RobotLogCommon.d(TAG, "Moving elevator motors " + FTCRobot.MotorId.LEFT_ELEVATOR + ", " +
+                FTCRobot.MotorId.RIGHT_ELEVATOR + " down to their magnetic limit");
 
         try {
             boolean reachedLeftLimit = false;
@@ -118,12 +118,12 @@ public class ElevatorMotion {
             while (!reachedLeftLimit || !reachedRightLimit) {
                 if (!reachedLeftLimit && pLeftSwitch.isPressed()) {
                     reachedLeftLimit = true;
-                    elevator.runAtVelocity(FTCRobot.MotorId.ELEVATOR_LEFT, 0.0);
+                    elevator.runAtVelocity(FTCRobot.MotorId.LEFT_ELEVATOR, 0.0);
                 }
 
                 if (!reachedRightLimit && pRightSwitch.isPressed()) {
                     reachedRightLimit = true;
-                    elevator.runAtVelocity(FTCRobot.MotorId.ELEVATOR_RIGHT, 0.0);
+                    elevator.runAtVelocity(FTCRobot.MotorId.RIGHT_ELEVATOR, 0.0);
                 }
 
                 sleep(10);
@@ -133,10 +133,10 @@ public class ElevatorMotion {
 
             RobotLogCommon.d(TAG, "Motion of elevators down to their magnetic limits complete");
             EnumMap<FTCRobot.MotorId, Integer> elevatorMotorPositions = elevator.getCurrentPositions();
-            RobotLogCommon.d(TAG, "Elevator motor " + FTCRobot.MotorId.ELEVATOR_LEFT +
-                    " ending position " + elevatorMotorPositions.get(FTCRobot.MotorId.ELEVATOR_LEFT));
-            RobotLogCommon.d(TAG, "Elevate motor " + FTCRobot.MotorId.ELEVATOR_RIGHT +
-                    " ending position " + elevatorMotorPositions.get(FTCRobot.MotorId.ELEVATOR_RIGHT));
+            RobotLogCommon.d(TAG, "Elevator motor " + FTCRobot.MotorId.LEFT_ELEVATOR +
+                    " ending position " + elevatorMotorPositions.get(FTCRobot.MotorId.LEFT_ELEVATOR));
+            RobotLogCommon.d(TAG, "Elevate motor " + FTCRobot.MotorId.RIGHT_ELEVATOR +
+                    " ending position " + elevatorMotorPositions.get(FTCRobot.MotorId.RIGHT_ELEVATOR));
 
             // Reset the zero point of the encoders.
             elevator.setRunModeAll(DcMotor.RunMode.STOP_AND_RESET_ENCODER);

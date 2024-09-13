@@ -73,9 +73,7 @@ public abstract class SingleMotorCore {
     // Assumes all clipping and all final modifications to the velocity,
     // e.g. running at .5 velocity, have already been performed.
     public void runAtVelocity(double pVelocity) {
-        if (singleMotor.getMode() == DcMotor.RunMode.RUN_WITHOUT_ENCODER)
-            throw new AutonomousRobotException(TAG, "Motor " + motorId + ": setVelocity incompatible with RUN_WITHOUT_ENCODER");
-
+        RobotLogCommon.d(TAG,"Motor " + motorId + " run mode " + singleMotor.getMode()); // just log the run mode
         RobotLogCommon.d(TAG, "Running at ticks per second " + (pVelocity * maxVelocity));
         singleMotor.setVelocity(pVelocity * maxVelocity);
     }

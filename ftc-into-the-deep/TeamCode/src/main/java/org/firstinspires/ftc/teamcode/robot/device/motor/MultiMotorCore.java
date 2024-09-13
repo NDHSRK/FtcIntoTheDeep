@@ -4,7 +4,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.ftcdevcommon.AutonomousRobotException;
 import org.firstinspires.ftc.ftcdevcommon.xml.XPathAccess;
 import org.firstinspires.ftc.teamcode.common.RobotLogCommon;
 import org.firstinspires.ftc.teamcode.robot.FTCRobot;
@@ -17,7 +16,7 @@ import javax.xml.xpath.XPathExpressionException;
 
 public abstract class MultiMotorCore {
 
-    private static final String TAG = SingleMotorCore.class.getSimpleName();
+    private static final String TAG = MultiMotorCore.class.getSimpleName();
 
     protected EnumMap<FTCRobot.MotorId, DcMotorEx> motorMap = new EnumMap<>(FTCRobot.MotorId.class);
 
@@ -91,9 +90,7 @@ public abstract class MultiMotorCore {
         DcMotorEx motor = Objects.requireNonNull(motorMap.get(pMotorId),
                 TAG + " runAtVelocity: motor " + pMotorId + " is null in the motorMap");
 
-        if (motor.getMode() != DcMotor.RunMode.RUN_USING_ENCODER)
-            throw new AutonomousRobotException(TAG, "Motor " + pMotorId + ": runAtVelocity has not been set to RUN_USING_ENCODER");
-
+        RobotLogCommon.d(TAG,"Motor " + pMotorId + " run mode " + motor.getMode()); // just log the run mode
         RobotLogCommon.d(TAG, "Running at ticks per second " + (pVelocity * maxVelocity));
         Objects.requireNonNull(motorMap.get(pMotorId),
                 TAG + " setTargetPosition: motor " + pMotorId + " is null in pVelocityMap").setVelocity(pVelocity * maxVelocity);
@@ -102,15 +99,13 @@ public abstract class MultiMotorCore {
     public void runAtVelocityAll(double pVelocity) {
         motorMap.forEach((k, v) ->
         {
-            if (v.getMode() != DcMotor.RunMode.RUN_USING_ENCODER)
-                throw new AutonomousRobotException(TAG, "Motor " + k + ": setVelocityAll has not been set to RUN_USING_ENCODER");
-
+            RobotLogCommon.d(TAG,"Motor " + k + " run mode " + v.getMode()); // just log the run mode
             v.setVelocity(pVelocity * maxVelocity);
         });
     }
 
     public boolean allBusy() {
-        Optional<Boolean> atLeastOneMotorNotBusy = Optional.of(!motorMap.entrySet().stream()
+        Optional<Boolean> atLeastOneMotorNotBusy = Optional.of(motorMap.entrySet().stream()
                 .anyMatch(entry -> !entry.getValue().isBusy())); // at least one motor is not busy
 
         return !atLeastOneMotorNotBusy.get();
@@ -120,30 +115,22 @@ public abstract class MultiMotorCore {
     public void runAtPowerAll(EnumMap<FTCRobot.MotorId, Double> pPowerMap) {
         pPowerMap.forEach((k, v) ->
         {
-            if (Objects.requireNonNull(motorMap.get(k),
-                    TAG + " runAtPowerAll: motor " + k + " is null in pPowerMap").getMode() != DcMotor.RunMode.RUN_WITHOUT_ENCODER)
-                throw new AutonomousRobotException(TAG, "Motor " + k + ": setPowerAll requires RUN_WITHOUT_ENCODER");
+            DcMotorEx motor = Objects.requireNonNull(motorMap.get(k),
+                    TAG + " runAtVelocity: motor " + k + " is null in the motorMap");
 
-            Objects.requireNonNull(motorMap.get(k)).setPower(v);
+            RobotLogCommon.d(TAG,"Motor " + k + " run mode " + motor.getMode()); // just log the run mode
+            motor.setPower(v);
         });
     }
 
     public void stopAllZeroVelocity() {
-        motorMap.forEach((k, v) ->
-        {
-            if (v.getMode() == DcMotor.RunMode.RUN_WITHOUT_ENCODER)
-                throw new AutonomousRobotException(TAG, "Motor " + k + ": stopZeroVelocityAll incompatible with RUN_WITHOUT_ENCODER");
-            v.setVelocity(0.0);
-        });
+        RobotLogCommon.d(TAG, "Stop all motors - set velocity to zero");
+        motorMap.forEach((k, v) -> v.setVelocity(0.0));
     }
 
     public void stopAllZeroPower() {
-        motorMap.forEach((k, v) ->
-        {
-            if (v.getMode() != DcMotor.RunMode.RUN_WITHOUT_ENCODER)
-                throw new AutonomousRobotException(TAG, "Motor " + k + ": stopAllZeroPower requires RUN_WITHOUT_ENCODER");
-            v.setPower(0.0);
-        });
+        RobotLogCommon.d(TAG, "Stop all motors - set power to zero");
+        motorMap.forEach((k, v) -> v.setVelocity(0.0));
     }
 
 }

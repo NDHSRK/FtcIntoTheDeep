@@ -39,7 +39,7 @@ public class Elevator extends MultiMotorCore {
 
     // There are two elevator motors that operate in tandem.
     public Elevator(HardwareMap pHardwareMap, XPathAccess pConfigXPath, String pElevatorElementName) throws XPathExpressionException {
-        super(pHardwareMap, pConfigXPath, pElevatorElementName, FTCRobot.MotorId.ELEVATOR_LEFT, FTCRobot.MotorId.ELEVATOR_RIGHT);
+        super(pHardwareMap, pConfigXPath, pElevatorElementName, FTCRobot.MotorId.LEFT_ELEVATOR, FTCRobot.MotorId.RIGHT_ELEVATOR);
 
         setZeroPowerBrakeAll();
 

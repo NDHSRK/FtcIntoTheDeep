@@ -46,7 +46,7 @@ public class FTCRobot {
     public enum MotorId {
         LEFT_FRONT_DRIVE, RIGHT_FRONT_DRIVE, LEFT_BACK_DRIVE, RIGHT_BACK_DRIVE,
         INTAKE, //**TODO for testing XML and SingleMotorCore
-        ELEVATOR_LEFT, ELEVATOR_RIGHT, //**TODO for testing XML and MultiMotorCore
+        LEFT_ELEVATOR, RIGHT_ELEVATOR, //**TODO for testing XML and MultiMotorCore
         MOTOR_ID_NPOS // for error checking
     }
 
