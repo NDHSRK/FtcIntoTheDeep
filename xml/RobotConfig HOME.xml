@@ -23,7 +23,7 @@
     </drive_train_power>
   </TELEOP_SETTINGS>
 
-  <ELEVATOR configured="no">
+  <ELEVATOR configured="yes">
     <multiple_motors model="goBILDA 5203 Yellow Jacket Planetary Gear Motor 5203-2402-0019"
       clicks_per_motor_rev="537.7" rpm="312.0">
       <left_elevator device_name="left_elevator" direction="FORWARD" />
@@ -46,7 +46,7 @@
     </positions>
   </ELEVATOR>
 
-  <INTAKE configured="yes">
+  <INTAKE configured="no">
     <single_motor model="goBILDA 5203 Yellow Jacket Planetary Gear Motor 5203-2402-0019"
       clicks_per_motor_rev="537.7" rpm="312.0">
       <intake device_name="intake_main" direction="FORWARD" />
@@ -89,7 +89,7 @@
     <hold_led_on>2000</hold_led_on>
   </FREIGHT_SENSOR>
 
-  <VISION_PORTAL_WEBCAM configured="yes">
+  <VISION_PORTAL_WEBCAM configured="no">
     <webcam_set>
       <webcam>
         <internal_id>front_webcam</internal_id>

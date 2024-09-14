@@ -10,9 +10,9 @@
         <actions>
 
             
-            <RUN_INTAKE/>
+            <!-- RUN_INTAKE/ -->
 
-            <!-- RUN_ELEVATOR/ -->
+            <RUN_ELEVATOR/>
 
             <!-- TAKE_PICTURE_WEBCAM>
                 <internal_webcam_id>front_webcam</internal_webcam_id>

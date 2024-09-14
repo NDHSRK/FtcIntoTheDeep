@@ -63,17 +63,11 @@ public class BasicDrive extends TeleOpBase {
 
     private void togglePowerLevel() {
         if (toggleHalfPower.is(FTCButton.State.TAP)) {
-            telemetry.addLine("Toggle tapped");
-            DrivePower newDrivePower = (DrivePower) toggleHalfPower.toggle();
+            DrivePower newDrivePower = toggleHalfPower.toggle();
             if (newDrivePower == DrivePower.FULL_POWER)
                 driveMotorPower = 1.0;
             else if (newDrivePower == DrivePower.HALF_POWER)
                 driveMotorPower = 0.5;
-
-            telemetry.addLine("Driver power is now " + newDrivePower);
-            telemetry.update();
-            sleep(1000);
         }
     }
-
 }
