@@ -23,7 +23,7 @@
     </drive_train_power>
   </TELEOP_SETTINGS>
 
-  <ELEVATOR configured="yes">
+  <ELEVATOR configured="no">
     <multiple_motors model="goBILDA 5203 Yellow Jacket Planetary Gear Motor 5203-2402-0019"
       clicks_per_motor_rev="537.7" rpm="312.0">
       <left_elevator device_name="left_elevator" direction="FORWARD" />
@@ -62,13 +62,13 @@
 
   <!-- Servos -->
 
-  <DRONE_LAUNCHER configured="no">
-    <single_servo model="goBilda Dual Mode Servo 2000-0025-0003">
+  <DRONE_LAUNCHER configured="yes">
+    <single_servo model="goBilda Dual Mode Servo 2000-0025-0004">
       <drone_launcher device_name="drone_launcher" />
     </single_servo>
     <positions>
       <hold>0.0</hold>
-      <launch>0.1</launch>
+      <launch>0.1</launch> <!-- CenterStage value. -->
     </positions>
   </DRONE_LAUNCHER>
 
@@ -81,13 +81,13 @@
   </LED_RING>
 
   <!-- Sensors -->
-  <FREIGHT_SENSOR configured="no">
+  <SAMPLE_SENSOR configured="no">
     <sensor model="Rev Robotics V3 Color/Distance Sensor">
-      <freight_sensor device_name="freight_sensor" />
+      <sample_sensor device_name="sample_sensor" />
     </sensor>
-    <freight_in_carrier_max>2.5</freight_in_carrier_max>
+    <sample_in_carrier_max>2.5</sample_in_carrier_max>
     <hold_led_on>2000</hold_led_on>
-  </FREIGHT_SENSOR>
+  </SAMPLE_SENSOR>
 
   <VISION_PORTAL_WEBCAM configured="no">
     <webcam_set>

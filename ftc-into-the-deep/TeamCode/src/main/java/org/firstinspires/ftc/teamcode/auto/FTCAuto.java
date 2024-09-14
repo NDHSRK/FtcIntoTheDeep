@@ -536,6 +536,16 @@ public class FTCAuto {
                 break;
             }
 
+            //## For testing.
+            case "LAUNCH_DRONE": {
+                robot.droneLauncherServo.hold();
+                sleep(500);
+
+                robot.droneLauncherServo.launch();
+                sleep(500);
+                break;
+            }
+
             //## For testing, click count and velocity are arbitrary.
             case "RUN_INTAKE": {
                 RobotLogCommon.d(TAG, "Running the INTAKE");
