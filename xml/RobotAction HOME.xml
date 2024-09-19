@@ -9,13 +9,13 @@
         </parameters>
         <actions>
 
-            <LAUNCH_DRONE/>
+            <!-- LAUNCH_DRONE/ -->
             
             <!-- RUN_INTAKE/ -->
 
             <!-- RUN_ELEVATOR/ -->
 
-            <!-- TAKE_PICTURE_WEBCAM>
+            <TAKE_PICTURE_WEBCAM>
                 <internal_webcam_id>front_webcam</internal_webcam_id>
             </TAKE_PICTURE_WEBCAM>
 
@@ -24,7 +24,7 @@
                 <processor>raw_frame</processor>
             </DISABLE_PROCESSOR>
 
-            <ENABLE_PROCESSOR>
+            <!-- ENABLE_PROCESSOR>
                 <internal_webcam_id>front_webcam</internal_webcam_id>
                 <processor>april_tag</processor>
             </ENABLE_PROCESSOR -->

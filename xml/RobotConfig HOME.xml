@@ -62,7 +62,7 @@
 
   <!-- Servos -->
 
-  <DRONE_LAUNCHER configured="yes">
+  <DRONE_LAUNCHER configured="no">
     <single_servo model="goBilda Dual Mode Servo 2000-0025-0004">
       <drone_launcher device_name="drone_launcher" />
     </single_servo>
@@ -89,7 +89,7 @@
     <hold_led_on>2000</hold_led_on>
   </SAMPLE_SENSOR>
 
-  <VISION_PORTAL_WEBCAM configured="no">
+  <VISION_PORTAL_WEBCAM configured="yes">
     <webcam_set>
       <webcam>
         <internal_id>front_webcam</internal_id>
