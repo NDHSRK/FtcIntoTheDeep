@@ -30,8 +30,6 @@ public class FTCAutoDispatch {
 
             RobotLogCommon.c(TAG, "Constructing FTCRobot with run type " + pRunType);
             FTCRobot robot = new FTCRobot(pLinear, pRunType);
-
-            RobotLogCommon.c(TAG, "Constructing FTCAuto with alliance " + pAlliance + " running OpMode " + pOpMode);
             FTCAuto ftcAuto = new FTCAuto(pAlliance, pLinear, robot, pOpMode);
 
             pLinear.telemetry.addData(TAG, "Waiting for start ...");

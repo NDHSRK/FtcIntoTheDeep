@@ -58,10 +58,8 @@ public class FTCAuto {
     private final RobotConstants.Alliance alliance;
     private final LinearOpMode linearOpMode;
     private final FTCRobot robot;
-    private final RobotConstantsIntoTheDeep.OpMode opMode;
     private final String workingDirectory;
     private final int autoStartDelay;
-    private final RobotActionXML actionXML;
     private final RobotActionXML.RobotActionData actionData;
     private final MecanumDrive roadrunnerDrive;
 
@@ -79,12 +77,11 @@ public class FTCAuto {
                    RobotConstantsIntoTheDeep.OpMode pOpMode)
             throws ParserConfigurationException, SAXException, XPathException, IOException {
 
-        RobotLogCommon.c(TAG, "FTCAuto constructor");
+        RobotLogCommon.c(TAG, "Constructing FTCAuto with alliance " + pAlliance + " running OpMode " + pOpMode);
 
         alliance = pAlliance;
         linearOpMode = pLinearOpMode; // FTC context
         robot = pRobot; // robot hardware
-        opMode = pOpMode;
 
         // Get the directory for the various configuration files.
         workingDirectory = WorkingDirectory.getWorkingDirectory();
@@ -95,7 +92,7 @@ public class FTCAuto {
 
         // Read the RobotAction XXX.xml file for all OpModes.
         RobotLogCommon.c(TAG, "Getting the Autonomous choreographies from " + robot.startParameters.robotActionFilename);
-        actionXML = new RobotActionXML(robot.startParameters.robotActionFilename);
+        RobotActionXML actionXML = new RobotActionXML(robot.startParameters.robotActionFilename);
 
         // Extract data from the parsed XML file for the selected OpMode only.
         actionData = actionXML.getOpModeData(pOpMode.toString());
@@ -194,7 +191,7 @@ public class FTCAuto {
 
             // Follow the choreography specified in the robot action file.
             List<RobotXMLElement> actions = actionData.actions;
-            actionStatus = executeActions(actions, opMode);
+            actionStatus = executeActions(actions);
         } finally {
             //&& 1/3/2024 Experiments (such as letting Autonomous time out)
             // have shown that our finally() block is not executed when the
@@ -230,7 +227,7 @@ public class FTCAuto {
     //===============================================================================================
     //===============================================================================================
 
-    private ActionStatus executeActions(List<RobotXMLElement> pActions, RobotConstantsIntoTheDeep.OpMode pOpMode) throws Exception {
+    private ActionStatus executeActions(List<RobotXMLElement> pActions) throws Exception {
         for (RobotXMLElement action : pActions) {
             if (!linearOpMode.opModeIsActive()) {
                 RobotLog.dd(TAG, "OpMode went inactive in the main Autonomous loop");
@@ -245,7 +242,7 @@ public class FTCAuto {
                 return ActionStatus.OPMODE_TIMEOUT;
             }
 
-            ActionStatus actionStatus = executeAction(action, pOpMode);
+            ActionStatus actionStatus = executeAction(action);
             if (actionStatus == ActionStatus.ACTION_STOP || actionStatus == ActionStatus.ACTION_STOP_ALL)
                 return actionStatus;
         }
@@ -258,7 +255,7 @@ public class FTCAuto {
     // Note that executeAction may return a value other than ActionStatus.ACTION_COMPLETE
     // as a signal to stop or short-circuit the current set of actions.
     @SuppressLint("DefaultLocale")
-    private ActionStatus executeAction(RobotXMLElement pAction, RobotConstantsIntoTheDeep.OpMode pOpMode) throws Exception {
+    private ActionStatus executeAction(RobotXMLElement pAction) throws Exception {
         // Set up XPath access to the current action.
         XPathAccess actionXPath = new XPathAccess(pAction);
         String actionName = pAction.getRobotXMLElementName().toUpperCase();
@@ -620,6 +617,10 @@ public class FTCAuto {
     // The field MecanumDrive roadrunnerDrive has already been set with the
     // starting pose.
     private void runRedF3() {
+        //**TODO fill in runRedF3;
+    }
+
+    private void runRedF4() {
         // The field drive.pose is not actually used here.
         Action hangSpecimen = roadrunnerDrive.actionBuilder(roadrunnerDrive.pose)
                 .waitSeconds(2)
@@ -629,13 +630,9 @@ public class FTCAuto {
                 new SequentialAction(
                         TrajectoryActionCollection.buildTrajectoryAction(roadrunnerDrive, roadrunnerDrive.pose, TrajectoryActionCollection.TrajectoryActionId.RED_F4_TO_SUBMERSIBLE),
                         hangSpecimen,
-                        new NestedTrajectoryAction(roadrunnerDrive, TrajectoryActionCollection.TrajectoryActionId.RED_F4_TO_SAMPLE_1)
+                        new LinkedTrajectoryAction(roadrunnerDrive, TrajectoryActionCollection.TrajectoryActionId.RED_F4_TO_SAMPLE_1)
                 )
         );
-    }
-
-    private void runRedF4() {
-        //**TODO fill in runRedF44;
     }
 
     // Sleeps but also tests if the OpMode is still active.
