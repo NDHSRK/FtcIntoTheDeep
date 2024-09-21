@@ -4,7 +4,7 @@ import org.firstinspires.ftc.ftcdevcommon.AutonomousRobotException;
 import org.firstinspires.ftc.ftcdevcommon.Pair;
 import org.firstinspires.ftc.ftcdevcommon.xml.RobotXMLElement;
 import org.firstinspires.ftc.ftcdevcommon.xml.XMLUtils;
-import org.firstinspires.ftc.teamcode.common.RobotConstantsCurrentGame;
+import org.firstinspires.ftc.teamcode.common.RobotConstantsIntoTheDeep;
 import org.firstinspires.ftc.teamcode.common.RobotLogCommon;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -206,7 +206,7 @@ public class RobotActionXML {
         }
     }
 
-    public static ArrayList<Pair<RobotConstantsCurrentGame.ProcessorIdentifier, Boolean>> getStartWebcamProcessors(RobotXMLElement pStartWebcamElement) {
+    public static ArrayList<Pair<RobotConstantsIntoTheDeep.ProcessorIdentifier, Boolean>> getStartWebcamProcessors(RobotXMLElement pStartWebcamElement) {
 
         // Get the <processor_set> child of the <START_WEBCAM>.
         NodeList processor_set_node = pStartWebcamElement.getRobotXMLElement().getElementsByTagName("processor_set");
@@ -218,7 +218,7 @@ public class RobotActionXML {
         if (processor_nodes == null)
             throw new AutonomousRobotException(TAG, "Element <processor_set> has no child elements");
 
-        ArrayList<Pair<RobotConstantsCurrentGame.ProcessorIdentifier, Boolean>> webcamProcessors = new ArrayList<>();
+        ArrayList<Pair<RobotConstantsIntoTheDeep.ProcessorIdentifier, Boolean>> webcamProcessors = new ArrayList<>();
 
         XMLUtils.processElements(processor_nodes, (processor_node) -> {
             if (processor_node != null && processor_node.getNodeName().equals("processor")) {
@@ -234,8 +234,8 @@ public class RobotActionXML {
                 if (disable_node != null && disable_node.getTextContent().equals("yes"))
                     enableOnStart = false;
 
-                RobotConstantsCurrentGame.ProcessorIdentifier processorId =
-                        RobotConstantsCurrentGame.ProcessorIdentifier.valueOf(processor_node.getTextContent().toUpperCase());
+                RobotConstantsIntoTheDeep.ProcessorIdentifier processorId =
+                        RobotConstantsIntoTheDeep.ProcessorIdentifier.valueOf(processor_node.getTextContent().toUpperCase());
                 webcamProcessors.add(Pair.create(processorId, enableOnStart));
             }
         });

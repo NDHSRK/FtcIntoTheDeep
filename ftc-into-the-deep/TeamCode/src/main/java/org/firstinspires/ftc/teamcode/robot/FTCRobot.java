@@ -8,7 +8,7 @@ import org.firstinspires.ftc.ftcdevcommon.platform.android.WorkingDirectory;
 import org.firstinspires.ftc.ftcdevcommon.xml.XPathAccess;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.common.RobotConstants;
-import org.firstinspires.ftc.teamcode.common.RobotConstantsCurrentGame;
+import org.firstinspires.ftc.teamcode.common.RobotConstantsIntoTheDeep;
 import org.firstinspires.ftc.teamcode.common.RobotLogCommon;
 import org.firstinspires.ftc.teamcode.robot.device.camera.VisionPortalWebcamConfiguration;
 import org.firstinspires.ftc.teamcode.robot.device.motor.Elevator;
@@ -74,7 +74,7 @@ public class FTCRobot {
     // Instantiate here in FTCRobot so that these objects
     // can be shared between TeleOp and FTCAuto when it is
     // embedded within TeleOp.
-    public final EnumMap<RobotConstantsCurrentGame.InternalWebcamId, VisionPortalWebcamConfiguration.ConfiguredWebcam> configuredWebcams;
+    public final EnumMap<RobotConstantsIntoTheDeep.InternalWebcamId, VisionPortalWebcamConfiguration.ConfiguredWebcam> configuredWebcams;
 
     public FTCRobot(LinearOpMode pLinearOpMode, RobotConstants.RunType pRunType) throws InterruptedException {
         hardwareMap = pLinearOpMode.hardwareMap;
@@ -192,7 +192,7 @@ public class FTCRobot {
                 configuredWebcams = null;
             } else {
                 // Any configured VisionPortal webcams?
-                EnumMap<RobotConstantsCurrentGame.InternalWebcamId, VisionPortalWebcamConfiguration.ConfiguredWebcam> configuredWebcamsLocal;
+                EnumMap<RobotConstantsIntoTheDeep.InternalWebcamId, VisionPortalWebcamConfiguration.ConfiguredWebcam> configuredWebcamsLocal;
                 configXPath = configXML.getPath(VISION_PORTAL_WEBCAM_ELEMENT_NAME);
                 String webcamYesNo = configXPath.getRequiredTextInRange("@configured", configXPath.validRange("yes", "no"));
                 RobotLogCommon.c(TAG, "VisionPortal webcam configuration option: " + webcamYesNo);
@@ -226,7 +226,7 @@ public class FTCRobot {
     // object. Use the webcam's serial number in its WebcamName
     // object to associate the webcam with its counterpart in
     // RobotConfig.xml.
-    private void matchHardwareWebcamsWithConfiguredWebcams(EnumMap<RobotConstantsCurrentGame.InternalWebcamId, VisionPortalWebcamConfiguration.ConfiguredWebcam> pConfiguredWebcams) {
+    private void matchHardwareWebcamsWithConfiguredWebcams(EnumMap<RobotConstantsIntoTheDeep.InternalWebcamId, VisionPortalWebcamConfiguration.ConfiguredWebcam> pConfiguredWebcams) {
         String webcamId;
         for (int i = 1; i <= pConfiguredWebcams.size(); i++) {
             webcamId = "Webcam " + new DecimalFormat("0").format(i);

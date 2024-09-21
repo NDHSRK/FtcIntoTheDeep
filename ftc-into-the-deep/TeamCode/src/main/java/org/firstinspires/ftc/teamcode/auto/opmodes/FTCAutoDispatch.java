@@ -2,12 +2,12 @@ package org.firstinspires.ftc.teamcode.auto.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.teamcode.common.RobotConstantsIntoTheDeep;
 import org.firstinspires.ftc.teamcode.common.RobotLogCommon;
 import org.firstinspires.ftc.ftcdevcommon.platform.android.WorkingDirectory;
 import org.firstinspires.ftc.teamcode.auto.FTCAuto;
 import org.firstinspires.ftc.teamcode.common.FTCErrorHandling;
 import org.firstinspires.ftc.teamcode.common.RobotConstants;
-import org.firstinspires.ftc.teamcode.common.RobotConstantsCurrentGame;
 import org.firstinspires.ftc.teamcode.robot.FTCRobot;
 
 // Use this dispatcher class to place the launching of FTCAuto and all of the error
@@ -15,7 +15,7 @@ import org.firstinspires.ftc.teamcode.robot.FTCRobot;
 public class FTCAutoDispatch {
 
     public static void runAuto(RobotConstants.RunType pRunType,
-                               RobotConstantsCurrentGame.OpMode pOpMode,
+                               RobotConstantsIntoTheDeep.OpMode pOpMode,
                                RobotConstants.Alliance pAlliance,
                                LinearOpMode pLinear) throws InterruptedException {
 

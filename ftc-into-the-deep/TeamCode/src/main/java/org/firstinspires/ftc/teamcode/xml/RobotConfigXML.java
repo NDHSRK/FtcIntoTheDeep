@@ -1,11 +1,11 @@
 package org.firstinspires.ftc.teamcode.xml;
 
 import org.firstinspires.ftc.ftcdevcommon.AutonomousRobotException;
+import org.firstinspires.ftc.teamcode.common.RobotConstantsIntoTheDeep;
 import org.firstinspires.ftc.teamcode.common.RobotLogCommon;
 import org.firstinspires.ftc.ftcdevcommon.xml.RobotXMLElement;
 import org.firstinspires.ftc.ftcdevcommon.xml.XMLUtils;
 import org.firstinspires.ftc.ftcdevcommon.xml.XPathAccess;
-import org.firstinspires.ftc.teamcode.common.RobotConstantsCurrentGame;
 import org.firstinspires.ftc.teamcode.robot.device.camera.VisionPortalWebcamConfiguration;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -41,8 +41,8 @@ public class RobotConfigXML {
     // End IntelliJ only
 
     private final Map<String, RobotXMLElement> robotElementCollection = new HashMap<>();
-    private final EnumMap<RobotConstantsCurrentGame.InternalWebcamId, VisionPortalWebcamConfiguration.ConfiguredWebcam> configuredWebcams
-            = new EnumMap<>(RobotConstantsCurrentGame.InternalWebcamId.class);
+    private final EnumMap<RobotConstantsIntoTheDeep.InternalWebcamId, VisionPortalWebcamConfiguration.ConfiguredWebcam> configuredWebcams
+            = new EnumMap<>(RobotConstantsIntoTheDeep.InternalWebcamId.class);
 
     public RobotConfigXML(String pRobotConfigFilename) throws ParserConfigurationException, SAXException, IOException, XPathExpressionException {
 
@@ -114,7 +114,7 @@ public class RobotConfigXML {
     }
 
     // Returns an empty map if the webcam is configured out.
-    public EnumMap<RobotConstantsCurrentGame.InternalWebcamId, VisionPortalWebcamConfiguration.ConfiguredWebcam> getConfiguredWebcams() {
+    public EnumMap<RobotConstantsIntoTheDeep.InternalWebcamId, VisionPortalWebcamConfiguration.ConfiguredWebcam> getConfiguredWebcams() {
         return configuredWebcams;
     }
 
@@ -149,7 +149,7 @@ public class RobotConfigXML {
             RobotLogCommon.c(TAG, "Configuring webcam with serial number " + webcamData.serialNumber);
 
             // Make sure there are no duplicate webcam ids or serial numbers.
-            Optional<RobotConstantsCurrentGame.InternalWebcamId> duplicate = configuredWebcams.entrySet().stream()
+            Optional<RobotConstantsIntoTheDeep.InternalWebcamId> duplicate = configuredWebcams.entrySet().stream()
                     .filter(e -> e.getValue().serialNumber.equals(webcamData.serialNumber) ||
                             e.getKey() == webcamData.internalWebcamId)
                     .map(Map.Entry::getKey)
@@ -170,8 +170,8 @@ public class RobotConfigXML {
                 id_node.getTextContent().isEmpty())
             throw new AutonomousRobotException(TAG, "Element 'internal_id' not found");
 
-        RobotConstantsCurrentGame.InternalWebcamId webcamId =
-                RobotConstantsCurrentGame.InternalWebcamId.valueOf(id_node.getTextContent().toUpperCase());
+        RobotConstantsIntoTheDeep.InternalWebcamId webcamId =
+                RobotConstantsIntoTheDeep.InternalWebcamId.valueOf(id_node.getTextContent().toUpperCase());
         RobotLogCommon.c(TAG, "Webcam with internal id " + webcamId + " is in the configuration");
 
         // <serial_number>
@@ -270,14 +270,14 @@ public class RobotConfigXML {
         if (processor_set_elements == null)
             throw new AutonomousRobotException(TAG, "Missing 'processor' elements");
 
-        ArrayList<RobotConstantsCurrentGame.ProcessorIdentifier> processorIds = new ArrayList<>();
+        ArrayList<RobotConstantsIntoTheDeep.ProcessorIdentifier> processorIds = new ArrayList<>();
         XMLUtils.processElements(processor_set_elements, (processor_node) -> {
             if (processor_node == null || !processor_node.getNodeName().equals("processor") ||
                     processor_node.getTextContent().isEmpty())
                 throw new AutonomousRobotException(TAG, "Element 'processor' not found");
 
-            RobotConstantsCurrentGame.ProcessorIdentifier processorId =
-                    RobotConstantsCurrentGame.ProcessorIdentifier.valueOf(processor_node.getTextContent().toUpperCase());
+            RobotConstantsIntoTheDeep.ProcessorIdentifier processorId =
+                    RobotConstantsIntoTheDeep.ProcessorIdentifier.valueOf(processor_node.getTextContent().toUpperCase());
             processorIds.add(processorId);
         });
 

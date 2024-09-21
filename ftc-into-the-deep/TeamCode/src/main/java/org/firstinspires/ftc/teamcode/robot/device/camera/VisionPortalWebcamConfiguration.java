@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.robot.device.camera;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.common.RobotConstantsCurrentGame;
+import org.firstinspires.ftc.teamcode.common.RobotConstantsIntoTheDeep;
 
 import java.util.ArrayList;
 
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class VisionPortalWebcamConfiguration {
     public static class ConfiguredWebcam {
         // The final fields originate in RobotConfig.xml.
-        public final RobotConstantsCurrentGame.InternalWebcamId internalWebcamId;
+        public final RobotConstantsIntoTheDeep.InternalWebcamId internalWebcamId;
         public final String serialNumber;
         public final int resolutionWidth;
         public final int resolutionHeight;
@@ -19,21 +19,21 @@ public class VisionPortalWebcamConfiguration {
 
         // A webcam may support more than one processor but only one may be
         // active at any given time.
-        public final ArrayList<RobotConstantsCurrentGame.ProcessorIdentifier> processorIdentifiers;
+        public final ArrayList<RobotConstantsIntoTheDeep.ProcessorIdentifier> processorIdentifiers;
         public final CameraCalibration cameraCalibration;
 
         // The non-final fields have setters which are called during initialization.
         private WebcamName webcamName;
         private VisionPortalWebcam visionPortalWebcam;
 
-        public ConfiguredWebcam(RobotConstantsCurrentGame.InternalWebcamId pCameraId,
+        public ConfiguredWebcam(RobotConstantsIntoTheDeep.InternalWebcamId pCameraId,
                                 String pSerialNumber,
                                 int pResolutionWidth,
                                 int pResolutionHeight,
                                 double pFieldOfView,
                                 double pDistanceCameraLensToRobotCenter,
                                 double pOffsetCameraLensFromRobotCenter,
-                                ArrayList<RobotConstantsCurrentGame.ProcessorIdentifier> pProcessorIdentifiers,
+                                ArrayList<RobotConstantsIntoTheDeep.ProcessorIdentifier> pProcessorIdentifiers,
                                 CameraCalibration pCameraCalibration) {
             internalWebcamId = pCameraId;
             serialNumber = pSerialNumber;

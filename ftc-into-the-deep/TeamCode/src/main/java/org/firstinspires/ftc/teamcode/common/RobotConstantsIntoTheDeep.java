@@ -1,20 +1,20 @@
 package org.firstinspires.ftc.teamcode.common;
 
-public class RobotConstantsCurrentGame {
+public class RobotConstantsIntoTheDeep {
 
     public enum OpMode {
         // Autonomous OpModes
-        TEST(OpModeType.AUTO_TEST),
+        BLUE_A3(OpModeType.COMPETITION),
+        BLUE_A4(OpModeType.COMPETITION),
+        RED_F3(OpModeType.COMPETITION),
+        RED_F4(OpModeType.COMPETITION),
+
+        TEST(OpModeType.AUTO_TEST), TEST_PRE_MATCH(OpModeType.AUTO_TEST),
+        TEST_ELEVATOR(OpModeType.AUTO_TEST),
         AUTO_NO_DRIVE(OpModeType.AUTO_TEST),
 
         // TeleOp OpModes
         TELEOP_NO_DRIVE(OpModeType.TELEOP_TEST),
-
-        // Pseudo OpModes for running Autonomous actions from within
-        // TeleOp. These are not "real" OpMoces in that they don't
-        // appear on the Driver Station but they are present in
-        // RobotAction.xml.
-        TELEOP_TAKE_PICTURE_WEBCAM(OpModeType.PSEUDO_OPMODE),
 
         // Indication that an OpMode has not yet been assigned.
         OPMODE_NPOS(OpModeType.PSEUDO_OPMODE);
@@ -38,7 +38,7 @@ public class RobotConstantsCurrentGame {
     }
 
     public enum ProcessorIdentifier {
-        RAW_FRAME, APRIL_TAG, CAMERA_STREAM_PREVIEW, PROCESSOR_NPOS
+        RAW_FRAME, APRIL_TAG, PROCESSOR_NPOS
     }
 
 }

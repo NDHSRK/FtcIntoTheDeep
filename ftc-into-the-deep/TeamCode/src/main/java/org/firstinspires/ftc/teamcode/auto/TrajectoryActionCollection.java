@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.auto;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
 
+import org.firstinspires.ftc.ftcdevcommon.AutonomousRobotException;
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
 
 public class TrajectoryActionCollection {
@@ -43,8 +44,7 @@ public class TrajectoryActionCollection {
                         .build();
             }
             default: {
-                //**TODO AutonomousRobotException.
-                throw new RuntimeException("Unrecognized trajectory action id " + pTrajectoryActionId);
+                throw new AutonomousRobotException(TAG, "Unrecognized trajectory action id " + pTrajectoryActionId);
             }
         }
     }

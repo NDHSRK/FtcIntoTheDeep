@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.ftcdevcommon.AutonomousRobotException;
 import org.firstinspires.ftc.ftcdevcommon.platform.android.WorkingDirectory;
 import org.firstinspires.ftc.teamcode.common.RobotConstants;
-import org.firstinspires.ftc.teamcode.common.RobotConstantsCurrentGame;
+import org.firstinspires.ftc.teamcode.common.RobotConstantsIntoTheDeep;
 import org.firstinspires.ftc.teamcode.common.RobotLogCommon;
 import org.firstinspires.ftc.teamcode.teleop.common.FTCButton;
 import org.firstinspires.ftc.teamcode.teleop.common.FTCToggleButtonNWay;
@@ -48,7 +48,7 @@ public class SetStartParameters extends LinearOpMode {
 
     // This section applies to the STANDARD mode only
     private int currentStartDelay;
-    RobotConstantsCurrentGame.OpMode currentOpMode = RobotConstantsCurrentGame.OpMode.OPMODE_NPOS;
+    RobotConstantsIntoTheDeep.OpMode currentOpMode = RobotConstantsIntoTheDeep.OpMode.OPMODE_NPOS;
     private FTCButton factoryReset;
     private boolean factoryResetRequested = false;
     private boolean factoryResetExecuted = false;
@@ -218,7 +218,7 @@ public class SetStartParameters extends LinearOpMode {
 
         // Reinitialize toggle button to its starting STANDARD position.
         toggleMode.setToggleState(Mode.STANDARD);
-        currentOpMode = RobotConstantsCurrentGame.OpMode.OPMODE_NPOS;
+        currentOpMode = RobotConstantsIntoTheDeep.OpMode.OPMODE_NPOS;
 
         String fullXMLDir = WorkingDirectory.getWorkingDirectory() + RobotConstants.XML_DIR;
         try {

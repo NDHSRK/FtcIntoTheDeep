@@ -8,10 +8,10 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.ftcdevcommon.AutonomousRobotException;
 import org.firstinspires.ftc.ftcdevcommon.Pair;
+import org.firstinspires.ftc.teamcode.common.RobotConstantsIntoTheDeep;
 import org.firstinspires.ftc.teamcode.common.RobotLogCommon;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.ExposureControl;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.GainControl;
-import org.firstinspires.ftc.teamcode.common.RobotConstantsCurrentGame;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.VisionProcessor;
 
@@ -34,28 +34,28 @@ public class VisionPortalWebcam {
     private static final String TAG = VisionPortalWebcam.class.getSimpleName();
 
     private final VisionPortalWebcamConfiguration.ConfiguredWebcam configuredWebcam;
-    private final EnumMap<RobotConstantsCurrentGame.ProcessorIdentifier, Pair<VisionProcessor, Boolean>> assignedProcessors;
+    private final EnumMap<RobotConstantsIntoTheDeep.ProcessorIdentifier, Pair<VisionProcessor, Boolean>> assignedProcessors;
     protected final VisionPortal visionPortal;
 
     // Constructor that can be used to attach a single processor to a webcam.
     public VisionPortalWebcam(VisionPortalWebcamConfiguration.ConfiguredWebcam pConfiguredWebcam,
-                              RobotConstantsCurrentGame.ProcessorIdentifier pProcessorId,
+                              RobotConstantsIntoTheDeep.ProcessorIdentifier pProcessorId,
                               Pair<VisionProcessor, Boolean> pAssignedProcessor) {
         this(pConfiguredWebcam,
-                new EnumMap<RobotConstantsCurrentGame.ProcessorIdentifier, Pair<VisionProcessor, Boolean>>(RobotConstantsCurrentGame.ProcessorIdentifier.class)
+                new EnumMap<RobotConstantsIntoTheDeep.ProcessorIdentifier, Pair<VisionProcessor, Boolean>>(RobotConstantsIntoTheDeep.ProcessorIdentifier.class)
                 {{put(pProcessorId, pAssignedProcessor);}});
     }
 
     public VisionPortalWebcam(VisionPortalWebcamConfiguration.ConfiguredWebcam pConfiguredWebcam,
-                              EnumMap<RobotConstantsCurrentGame.ProcessorIdentifier, Pair<VisionProcessor, Boolean>> pAssignedProcessors) {
+                              EnumMap<RobotConstantsIntoTheDeep.ProcessorIdentifier, Pair<VisionProcessor, Boolean>> pAssignedProcessors) {
         configuredWebcam = pConfiguredWebcam;
         assignedProcessors = pAssignedProcessors;
         RobotLogCommon.d(TAG, "Preparing to open the webcam " + configuredWebcam.internalWebcamId);
 
         // Check that the processors assigned to this webcam belong to the camera's <processor_set>
         // in RobotConfig.xml.
-        ArrayList<RobotConstantsCurrentGame.ProcessorIdentifier> processorIdentifiers = configuredWebcam.processorIdentifiers;
-        for (Map.Entry<RobotConstantsCurrentGame.ProcessorIdentifier, Pair<VisionProcessor, Boolean>> entry : assignedProcessors.entrySet()) {
+        ArrayList<RobotConstantsIntoTheDeep.ProcessorIdentifier> processorIdentifiers = configuredWebcam.processorIdentifiers;
+        for (Map.Entry<RobotConstantsIntoTheDeep.ProcessorIdentifier, Pair<VisionProcessor, Boolean>> entry : assignedProcessors.entrySet()) {
             if (!processorIdentifiers.contains(entry.getKey()))
                 throw new AutonomousRobotException(TAG, "Assigned processor with id " + entry.getValue().first + " is not in the configuration for webcam " + configuredWebcam.internalWebcamId);
         }
@@ -109,7 +109,7 @@ public class VisionPortalWebcam {
     }
 
     // Returns null if the requested processor is not enabled.
-    public VisionProcessor getEnabledProcessor(RobotConstantsCurrentGame.ProcessorIdentifier pProcessorId) {
+    public VisionProcessor getEnabledProcessor(RobotConstantsIntoTheDeep.ProcessorIdentifier pProcessorId) {
         Pair<VisionProcessor, Boolean> assignedProcessor = assignedProcessors.get(pProcessorId);
         if (assignedProcessor == null)
             throw new AutonomousRobotException(TAG, "Attempt to enable an unassigned processor " + pProcessorId);
@@ -157,7 +157,7 @@ public class VisionPortalWebcam {
         sleep(20);
     }
 
-    public void enableProcessor(RobotConstantsCurrentGame.ProcessorIdentifier pProcessorId) {
+    public void enableProcessor(RobotConstantsIntoTheDeep.ProcessorIdentifier pProcessorId) {
         if (!(visionPortal.getCameraState() == VisionPortal.CameraState.STREAMING ||
                 visionPortal.getCameraState() == VisionPortal.CameraState.STARTING_STREAM))
             throw new AutonomousRobotException(TAG, "Attempting to enable the processor " + pProcessorId + " even though the webcam is not STREAMING");
@@ -176,7 +176,7 @@ public class VisionPortalWebcam {
         RobotLogCommon.d(TAG, "Enabling the processor " + pProcessorId);
     }
 
-    public void disableProcessor(RobotConstantsCurrentGame.ProcessorIdentifier pProcessorId) {
+    public void disableProcessor(RobotConstantsIntoTheDeep.ProcessorIdentifier pProcessorId) {
         if (!(visionPortal.getCameraState() == VisionPortal.CameraState.STREAMING ||
                 visionPortal.getCameraState() == VisionPortal.CameraState.STARTING_STREAM))
             throw new AutonomousRobotException(TAG, "Attempting to disable the processor " + pProcessorId + " even though the webcam is not STREAMING");

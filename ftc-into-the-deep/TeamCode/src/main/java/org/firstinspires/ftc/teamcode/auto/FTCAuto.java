@@ -5,7 +5,10 @@ import static org.firstinspires.ftc.teamcode.auto.vision.AprilTagUtils.AprilTagI
 
 import android.annotation.SuppressLint;
 
+import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.SequentialAction;
+import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.RobotLog;
@@ -18,7 +21,7 @@ import org.firstinspires.ftc.ftcdevcommon.xml.RobotXMLElement;
 import org.firstinspires.ftc.ftcdevcommon.xml.XPathAccess;
 import org.firstinspires.ftc.teamcode.auto.vision.AprilTagUtils;
 import org.firstinspires.ftc.teamcode.common.RobotConstants;
-import org.firstinspires.ftc.teamcode.common.RobotConstantsCurrentGame;
+import org.firstinspires.ftc.teamcode.common.RobotConstantsIntoTheDeep;
 import org.firstinspires.ftc.teamcode.common.RobotLogCommon;
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
 import org.firstinspires.ftc.teamcode.robot.FTCRobot;
@@ -26,7 +29,6 @@ import org.firstinspires.ftc.teamcode.robot.device.camera.AprilTagAccess;
 import org.firstinspires.ftc.teamcode.robot.device.camera.RawFrameProcessor;
 import org.firstinspires.ftc.teamcode.robot.device.camera.VisionPortalWebcam;
 import org.firstinspires.ftc.teamcode.robot.device.camera.VisionPortalWebcamConfiguration;
-import org.firstinspires.ftc.teamcode.robot.device.motor.Elevator;
 import org.firstinspires.ftc.teamcode.robot.device.motor.ElevatorMotion;
 import org.firstinspires.ftc.teamcode.robot.device.motor.SingleMotorMotion;
 import org.firstinspires.ftc.teamcode.xml.RobotActionXML;
@@ -56,7 +58,7 @@ public class FTCAuto {
     private final RobotConstants.Alliance alliance;
     private final LinearOpMode linearOpMode;
     private final FTCRobot robot;
-    private final RobotConstantsCurrentGame.OpMode opMode;
+    private final RobotConstantsIntoTheDeep.OpMode opMode;
     private final String workingDirectory;
     private final int autoStartDelay;
     private final RobotActionXML actionXML;
@@ -68,13 +70,13 @@ public class FTCAuto {
         ACTION_STOP, ACTION_STOP_ALL, ACTION_COMPLETE, ALL_ACTIONS_COMPLETE
     }
 
-    private final EnumSet<RobotConstantsCurrentGame.InternalWebcamId> openWebcams = EnumSet.noneOf(RobotConstantsCurrentGame.InternalWebcamId.class);
+    private final EnumSet<RobotConstantsIntoTheDeep.InternalWebcamId> openWebcams = EnumSet.noneOf(RobotConstantsIntoTheDeep.InternalWebcamId.class);
 
     public static AutonomousTimer autonomousTimer; // grant visibility to all of Autonomous
 
     // Main class for the autonomous run.
     public FTCAuto(RobotConstants.Alliance pAlliance, LinearOpMode pLinearOpMode, FTCRobot pRobot,
-                   RobotConstantsCurrentGame.OpMode pOpMode)
+                   RobotConstantsIntoTheDeep.OpMode pOpMode)
             throws ParserConfigurationException, SAXException, XPathException, IOException {
 
         RobotLogCommon.c(TAG, "FTCAuto constructor");
@@ -125,16 +127,16 @@ public class FTCAuto {
         // alone.
         if (robot.configuredWebcams != null) { // if webcam(s) are configured in
             VisionPortalWebcamConfiguration.ConfiguredWebcam frontWebcamConfiguration =
-                    robot.configuredWebcams.get(RobotConstantsCurrentGame.InternalWebcamId.FRONT_WEBCAM);
+                    robot.configuredWebcams.get(RobotConstantsIntoTheDeep.InternalWebcamId.FRONT_WEBCAM);
             if (frontWebcamConfiguration != null) {
                 // The front webcam may configured for raw frames only or for both
                 // raw frames and AprilTags.
-                EnumMap<RobotConstantsCurrentGame.ProcessorIdentifier, Pair<VisionProcessor, Boolean>> assignedProcessors =
-                        new EnumMap<>(RobotConstantsCurrentGame.ProcessorIdentifier.class);
+                EnumMap<RobotConstantsIntoTheDeep.ProcessorIdentifier, Pair<VisionProcessor, Boolean>> assignedProcessors =
+                        new EnumMap<>(RobotConstantsIntoTheDeep.ProcessorIdentifier.class);
                 VisionProcessor rawFrameProcessor = new RawFrameProcessor();
-                assignedProcessors.put(RobotConstantsCurrentGame.ProcessorIdentifier.RAW_FRAME, Pair.create(rawFrameProcessor, true));
+                assignedProcessors.put(RobotConstantsIntoTheDeep.ProcessorIdentifier.RAW_FRAME, Pair.create(rawFrameProcessor, true));
 
-                if (frontWebcamConfiguration.processorIdentifiers.contains(RobotConstantsCurrentGame.ProcessorIdentifier.APRIL_TAG)) {
+                if (frontWebcamConfiguration.processorIdentifiers.contains(RobotConstantsIntoTheDeep.ProcessorIdentifier.APRIL_TAG)) {
                     VisionProcessor aprilTagProcessor = new AprilTagProcessor.Builder()
                             // Follow the MultiPortal sample, which only includes setLensIntrinsics
                             .setLensIntrinsics(frontWebcamConfiguration.cameraCalibration.focalLengthX,
@@ -143,7 +145,7 @@ public class FTCAuto {
                                     frontWebcamConfiguration.cameraCalibration.principalPointY)
                             .build();
 
-                    assignedProcessors.put(RobotConstantsCurrentGame.ProcessorIdentifier.APRIL_TAG, Pair.create(aprilTagProcessor, false));
+                    assignedProcessors.put(RobotConstantsIntoTheDeep.ProcessorIdentifier.APRIL_TAG, Pair.create(aprilTagProcessor, false));
                 }
 
                 VisionPortalWebcam visionPortalWebcam = new VisionPortalWebcam(frontWebcamConfiguration, assignedProcessors);
@@ -151,7 +153,7 @@ public class FTCAuto {
                 if (!visionPortalWebcam.waitForWebcamStart(2000))
                     throw new AutonomousRobotException(TAG, "Unable to start front webcam");
 
-                openWebcams.add(RobotConstantsCurrentGame.InternalWebcamId.FRONT_WEBCAM);
+                openWebcams.add(RobotConstantsIntoTheDeep.InternalWebcamId.FRONT_WEBCAM);
             }
         }
 
@@ -228,7 +230,7 @@ public class FTCAuto {
     //===============================================================================================
     //===============================================================================================
 
-    private ActionStatus executeActions(List<RobotXMLElement> pActions, RobotConstantsCurrentGame.OpMode pOpMode) throws Exception {
+    private ActionStatus executeActions(List<RobotXMLElement> pActions, RobotConstantsIntoTheDeep.OpMode pOpMode) throws Exception {
         for (RobotXMLElement action : pActions) {
             if (!linearOpMode.opModeIsActive()) {
                 RobotLog.dd(TAG, "OpMode went inactive in the main Autonomous loop");
@@ -256,17 +258,35 @@ public class FTCAuto {
     // Note that executeAction may return a value other than ActionStatus.ACTION_COMPLETE
     // as a signal to stop or short-circuit the current set of actions.
     @SuppressLint("DefaultLocale")
-    private ActionStatus executeAction(RobotXMLElement pAction, RobotConstantsCurrentGame.OpMode pOpMode) throws Exception {
+    private ActionStatus executeAction(RobotXMLElement pAction, RobotConstantsIntoTheDeep.OpMode pOpMode) throws Exception {
         // Set up XPath access to the current action.
         XPathAccess actionXPath = new XPathAccess(pAction);
         String actionName = pAction.getRobotXMLElementName().toUpperCase();
         RobotLogCommon.d(TAG, "Executing FTCAuto action " + actionName);
 
         switch (actionName) {
+            case "RUN_BLUE_A3": {
+                runBlueA3();
+                break;
+            }
+            case "RUN_BLUE_A4": {
+                runBlueA4();
+                break;
+            }
+            case "RUN_RED_F3": {
+                runRedF3();
+                break;
+            }
+            case "RUN_RED_F4": {
+                runRedF4();
+                break;
+            }
+
+
             case "START_WEBCAM": {
                 String webcamIdString = actionXPath.getRequiredText("internal_webcam_id").toUpperCase();
-                RobotConstantsCurrentGame.InternalWebcamId webcamId =
-                        RobotConstantsCurrentGame.InternalWebcamId.valueOf(webcamIdString);
+                RobotConstantsIntoTheDeep.InternalWebcamId webcamId =
+                        RobotConstantsIntoTheDeep.InternalWebcamId.valueOf(webcamIdString);
 
                 if (!openWebcams.add(webcamId))
                     throw new AutonomousRobotException(TAG, "Attempt to start webcam " + webcamId + " but it is already open");
@@ -279,11 +299,11 @@ public class FTCAuto {
                 // The <START_WEBCAM> in RobotAction.xml may contain a single
                 // <processor> element or a <processor_set> element with
                 // multiple <processor> children.
-                ArrayList<Pair<RobotConstantsCurrentGame.ProcessorIdentifier, Boolean>> requestedProcessors;
+                ArrayList<Pair<RobotConstantsIntoTheDeep.ProcessorIdentifier, Boolean>> requestedProcessors;
                 String processorIdString = actionXPath.getText("processor", "NPOS").toUpperCase();
                 if (!processorIdString.equals("NPOS")) { // single processor id
-                    RobotConstantsCurrentGame.ProcessorIdentifier processorId = RobotConstantsCurrentGame.ProcessorIdentifier.valueOf(processorIdString);
-                    requestedProcessors = new ArrayList<Pair<RobotConstantsCurrentGame.ProcessorIdentifier, Boolean>>() {{
+                    RobotConstantsIntoTheDeep.ProcessorIdentifier processorId = RobotConstantsIntoTheDeep.ProcessorIdentifier.valueOf(processorIdString);
+                    requestedProcessors = new ArrayList<Pair<RobotConstantsIntoTheDeep.ProcessorIdentifier, Boolean>>() {{
                         add(Pair.create(processorId, true)); // default to enable on webcam start
                     }};
                 } else // multiple processors, i.e. a <processor_set>.
@@ -293,17 +313,17 @@ public class FTCAuto {
                 // more processors to be assigned to the webcam. Check that each
                 // processor id is present in the webcam's <processor_set> in
                 // RobotConfig.xml and create the actual VisionProcessor objects.
-                EnumMap<RobotConstantsCurrentGame.ProcessorIdentifier, Pair<VisionProcessor, Boolean>> assignedProcessors =
-                        new EnumMap<>(RobotConstantsCurrentGame.ProcessorIdentifier.class);
-                ArrayList<RobotConstantsCurrentGame.ProcessorIdentifier> processorIdentifiers = configuredWebcam.processorIdentifiers;
-                for (Pair<RobotConstantsCurrentGame.ProcessorIdentifier, Boolean> entry : requestedProcessors) {
+                EnumMap<RobotConstantsIntoTheDeep.ProcessorIdentifier, Pair<VisionProcessor, Boolean>> assignedProcessors =
+                        new EnumMap<>(RobotConstantsIntoTheDeep.ProcessorIdentifier.class);
+                ArrayList<RobotConstantsIntoTheDeep.ProcessorIdentifier> processorIdentifiers = configuredWebcam.processorIdentifiers;
+                for (Pair<RobotConstantsIntoTheDeep.ProcessorIdentifier, Boolean> entry : requestedProcessors) {
                     if (!processorIdentifiers.contains(entry.first))
                         throw new AutonomousRobotException(TAG, "Assigned processor with id " + entry.first + " is not in the configuration for webcam " + configuredWebcam.internalWebcamId);
 
                     switch (entry.first) {
                         case RAW_FRAME: {
                             RawFrameProcessor rawFrameProcessor = new RawFrameProcessor();
-                            assignedProcessors.put(RobotConstantsCurrentGame.ProcessorIdentifier.RAW_FRAME,
+                            assignedProcessors.put(RobotConstantsIntoTheDeep.ProcessorIdentifier.RAW_FRAME,
                                     Pair.create(rawFrameProcessor, entry.second));
                             break;
                         }
@@ -316,7 +336,7 @@ public class FTCAuto {
                                             configuredWebcam.cameraCalibration.principalPointY)
                                     .build();
 
-                            assignedProcessors.put(RobotConstantsCurrentGame.ProcessorIdentifier.APRIL_TAG,
+                            assignedProcessors.put(RobotConstantsIntoTheDeep.ProcessorIdentifier.APRIL_TAG,
                                     Pair.create(aprilTagProcessor, entry.second));
                             break;
                         }
@@ -337,8 +357,8 @@ public class FTCAuto {
 
             case "WAIT_FOR_WEBCAM_START": {
                 String webcamIdString = actionXPath.getRequiredText("internal_webcam_id").toUpperCase();
-                RobotConstantsCurrentGame.InternalWebcamId webcamId =
-                        RobotConstantsCurrentGame.InternalWebcamId.valueOf(webcamIdString);
+                RobotConstantsIntoTheDeep.InternalWebcamId webcamId =
+                        RobotConstantsIntoTheDeep.InternalWebcamId.valueOf(webcamIdString);
 
                 if (!openWebcams.contains(webcamId))
                     throw new AutonomousRobotException(TAG, "Attempt to wait for the startup of webcam " + webcamId + " but it is not open");
@@ -358,8 +378,8 @@ public class FTCAuto {
 
             case "STOP_WEBCAM": {
                 String webcamIdString = actionXPath.getRequiredText("internal_webcam_id").toUpperCase();
-                RobotConstantsCurrentGame.InternalWebcamId webcamId =
-                        RobotConstantsCurrentGame.InternalWebcamId.valueOf(webcamIdString);
+                RobotConstantsIntoTheDeep.InternalWebcamId webcamId =
+                        RobotConstantsIntoTheDeep.InternalWebcamId.valueOf(webcamIdString);
 
                 if (!openWebcams.contains(webcamId))
                     throw new AutonomousRobotException(TAG, "Attempt to close webcam " + webcamId + " but it is not open");
@@ -378,8 +398,8 @@ public class FTCAuto {
 
             case "STOP_WEBCAM_STREAMING": {
                 String webcamIdString = actionXPath.getRequiredText("internal_webcam_id").toUpperCase();
-                RobotConstantsCurrentGame.InternalWebcamId webcamId =
-                        RobotConstantsCurrentGame.InternalWebcamId.valueOf(webcamIdString);
+                RobotConstantsIntoTheDeep.InternalWebcamId webcamId =
+                        RobotConstantsIntoTheDeep.InternalWebcamId.valueOf(webcamIdString);
                 VisionPortalWebcamConfiguration.ConfiguredWebcam webcam =
                         Objects.requireNonNull(robot.configuredWebcams.get(webcamId), TAG + " Webcam " + webcamId + " is not in the current configuration");
 
@@ -393,8 +413,8 @@ public class FTCAuto {
 
             case "RESUME_WEBCAM_STREAMING": {
                 String webcamIdString = actionXPath.getRequiredText("internal_webcam_id").toUpperCase();
-                RobotConstantsCurrentGame.InternalWebcamId webcamId =
-                        RobotConstantsCurrentGame.InternalWebcamId.valueOf(webcamIdString);
+                RobotConstantsIntoTheDeep.InternalWebcamId webcamId =
+                        RobotConstantsIntoTheDeep.InternalWebcamId.valueOf(webcamIdString);
                 VisionPortalWebcamConfiguration.ConfiguredWebcam webcam =
                         Objects.requireNonNull(robot.configuredWebcams.get(webcamId), TAG + " Webcam " + webcamId + " is not in the current configuration");
 
@@ -409,8 +429,8 @@ public class FTCAuto {
 
             case "ENABLE_PROCESSOR": {
                 String webcamIdString = actionXPath.getRequiredText("internal_webcam_id").toUpperCase();
-                RobotConstantsCurrentGame.InternalWebcamId webcamId =
-                        RobotConstantsCurrentGame.InternalWebcamId.valueOf(webcamIdString);
+                RobotConstantsIntoTheDeep.InternalWebcamId webcamId =
+                        RobotConstantsIntoTheDeep.InternalWebcamId.valueOf(webcamIdString);
                 VisionPortalWebcamConfiguration.ConfiguredWebcam webcam =
                         Objects.requireNonNull(robot.configuredWebcams.get(webcamId), TAG + " Webcam " + webcamId + " is not in the current configuration");
 
@@ -418,7 +438,7 @@ public class FTCAuto {
                     throw new AutonomousRobotException(TAG, "Attempt to enable processor on webcam " + webcamId + " but it is not open");
 
                 String processorIdString = actionXPath.getRequiredText("processor").toUpperCase();
-                RobotConstantsCurrentGame.ProcessorIdentifier processorId = RobotConstantsCurrentGame.ProcessorIdentifier.valueOf(processorIdString);
+                RobotConstantsIntoTheDeep.ProcessorIdentifier processorId = RobotConstantsIntoTheDeep.ProcessorIdentifier.valueOf(processorIdString);
 
                 webcam.getVisionPortalWebcam().enableProcessor(processorId);
                 RobotLogCommon.d(TAG, "Enabled processor on webcam " + webcamIdString);
@@ -427,8 +447,8 @@ public class FTCAuto {
 
             case "DISABLE_PROCESSOR": {
                 String webcamIdString = actionXPath.getRequiredText("internal_webcam_id").toUpperCase();
-                RobotConstantsCurrentGame.InternalWebcamId webcamId =
-                        RobotConstantsCurrentGame.InternalWebcamId.valueOf(webcamIdString);
+                RobotConstantsIntoTheDeep.InternalWebcamId webcamId =
+                        RobotConstantsIntoTheDeep.InternalWebcamId.valueOf(webcamIdString);
                 VisionPortalWebcamConfiguration.ConfiguredWebcam webcam =
                         Objects.requireNonNull(robot.configuredWebcams.get(webcamId), TAG + " Webcam " + webcamId + " is not in the current configuration");
 
@@ -436,7 +456,7 @@ public class FTCAuto {
                     throw new AutonomousRobotException(TAG, "Attempt to disable processor on webcam " + webcamId + " but it is not open");
 
                 String processorIdString = actionXPath.getRequiredText("processor").toUpperCase();
-                RobotConstantsCurrentGame.ProcessorIdentifier processorId = RobotConstantsCurrentGame.ProcessorIdentifier.valueOf(processorIdString);
+                RobotConstantsIntoTheDeep.ProcessorIdentifier processorId = RobotConstantsIntoTheDeep.ProcessorIdentifier.valueOf(processorIdString);
 
                 webcam.getVisionPortalWebcam().disableProcessor(processorId);
                 RobotLogCommon.d(TAG, "Disabled processor on webcam " + webcamIdString);
@@ -448,8 +468,8 @@ public class FTCAuto {
             // been started.
             case "TAKE_PICTURE_WEBCAM": {
                 String webcamIdString = actionXPath.getRequiredText("internal_webcam_id").toUpperCase();
-                RobotConstantsCurrentGame.InternalWebcamId webcamId =
-                        RobotConstantsCurrentGame.InternalWebcamId.valueOf(webcamIdString);
+                RobotConstantsIntoTheDeep.InternalWebcamId webcamId =
+                        RobotConstantsIntoTheDeep.InternalWebcamId.valueOf(webcamIdString);
                 VisionPortalWebcamConfiguration.ConfiguredWebcam webcam =
                         Objects.requireNonNull(robot.configuredWebcams.get(webcamId), TAG + " Webcam " + webcamId + " is not in the current configuration");
 
@@ -457,7 +477,7 @@ public class FTCAuto {
                     throw new AutonomousRobotException(TAG, "Attempt to take picture on webcam " + webcamId + " but it is not open");
 
                 RawFrameProcessor rawFrameProcessor =
-                        (RawFrameProcessor) webcam.getVisionPortalWebcam().getEnabledProcessor(RobotConstantsCurrentGame.ProcessorIdentifier.RAW_FRAME);
+                        (RawFrameProcessor) webcam.getVisionPortalWebcam().getEnabledProcessor(RobotConstantsIntoTheDeep.ProcessorIdentifier.RAW_FRAME);
                 if (rawFrameProcessor == null)
                     throw new AutonomousRobotException(TAG, "The RAW_FRAME processor is not active");
 
@@ -486,8 +506,8 @@ public class FTCAuto {
             // For testing: look for all AprilTags in a loop for 10 seconds.
             case "FIND_ALL_APRIL_TAGS": {
                 String webcamIdString = actionXPath.getRequiredText("internal_webcam_id").toUpperCase();
-                RobotConstantsCurrentGame.InternalWebcamId webcamId =
-                        RobotConstantsCurrentGame.InternalWebcamId.valueOf(webcamIdString);
+                RobotConstantsIntoTheDeep.InternalWebcamId webcamId =
+                        RobotConstantsIntoTheDeep.InternalWebcamId.valueOf(webcamIdString);
 
                 VisionPortalWebcamConfiguration.ConfiguredWebcam webcam =
                         Objects.requireNonNull(robot.configuredWebcams.get(webcamId), TAG + " Webcam " + webcamId + " is not in the current configuration");
@@ -496,7 +516,7 @@ public class FTCAuto {
                     throw new AutonomousRobotException(TAG, "Attempt to find an AprilTag on webcam " + webcamId + " but it is not open");
 
                 VisionProcessor aprilTagProcessor =
-                        webcam.getVisionPortalWebcam().getEnabledProcessor(RobotConstantsCurrentGame.ProcessorIdentifier.APRIL_TAG);
+                        webcam.getVisionPortalWebcam().getEnabledProcessor(RobotConstantsIntoTheDeep.ProcessorIdentifier.APRIL_TAG);
                 if (aprilTagProcessor == null)
                     throw new AutonomousRobotException(TAG, "The APRIL_TAG processor is not active");
 
@@ -589,6 +609,35 @@ public class FTCAuto {
         return ActionStatus.ACTION_COMPLETE;
     }
 
+    private void runBlueA3() {
+        //**TODO fill in runBlueA3;
+    }
+
+    private void runBlueA4() {
+        //**TODO fill in runBlueA4;
+    }
+
+    // The field MecanumDrive roadrunnerDrive has already been set with the
+    // starting pose.
+    private void runRedF3() {
+        // The field drive.pose is not actually used here.
+        Action hangSpecimen = roadrunnerDrive.actionBuilder(roadrunnerDrive.pose)
+                .waitSeconds(2)
+                .build();
+
+        Actions.runBlocking(
+                new SequentialAction(
+                        TrajectoryActionCollection.buildTrajectoryAction(roadrunnerDrive, roadrunnerDrive.pose, TrajectoryActionCollection.TrajectoryActionId.RED_F4_TO_SUBMERSIBLE),
+                        hangSpecimen,
+                        new NestedTrajectoryAction(roadrunnerDrive, TrajectoryActionCollection.TrajectoryActionId.RED_F4_TO_SAMPLE_1)
+                )
+        );
+    }
+
+    private void runRedF4() {
+        //**TODO fill in runRedF44;
+    }
+
     // Sleeps but also tests if the OpMode is still active.
     // Telemetry should keep the FTC runtime from shutting us down due to inactivity.
     private void sleepInLoop(int pMilliseconds) {
@@ -656,8 +705,8 @@ public class FTCAuto {
     @SuppressLint("DefaultLocale")
     private AprilTagDetectionData detectAprilTag(AprilTagUtils.AprilTagId pTargetTagId, XPathAccess pActionXPath) throws XPathExpressionException {
         String webcamIdString = pActionXPath.getRequiredText("internal_webcam_id").toUpperCase();
-        RobotConstantsCurrentGame.InternalWebcamId webcamId =
-                RobotConstantsCurrentGame.InternalWebcamId.valueOf(webcamIdString);
+        RobotConstantsIntoTheDeep.InternalWebcamId webcamId =
+                RobotConstantsIntoTheDeep.InternalWebcamId.valueOf(webcamIdString);
 
         VisionPortalWebcamConfiguration.ConfiguredWebcam webcam =
                 Objects.requireNonNull(robot.configuredWebcams.get(webcamId), TAG + " Webcam " + webcamId + " is not in the current configuration");
@@ -666,7 +715,7 @@ public class FTCAuto {
             throw new AutonomousRobotException(TAG, "Attempt to find an AprilTag on webcam " + webcamId + " but it is not open");
 
         VisionProcessor aprilTagProcessor =
-                webcam.getVisionPortalWebcam().getEnabledProcessor(RobotConstantsCurrentGame.ProcessorIdentifier.APRIL_TAG);
+                webcam.getVisionPortalWebcam().getEnabledProcessor(RobotConstantsIntoTheDeep.ProcessorIdentifier.APRIL_TAG);
         if (aprilTagProcessor == null)
             throw new AutonomousRobotException(TAG, "The APRIL_TAG processor is not active");
 
@@ -735,11 +784,11 @@ public class FTCAuto {
     }
 
     private static class AprilTagDetectionData {
-        public final RobotConstantsCurrentGame.InternalWebcamId webcamId;
+        public final RobotConstantsIntoTheDeep.InternalWebcamId webcamId;
         public final AprilTagUtils.AprilTagId aprilTagId;
         public final AprilTagDetection ftcDetectionData;
 
-        public AprilTagDetectionData(RobotConstantsCurrentGame.InternalWebcamId pWebcamId,
+        public AprilTagDetectionData(RobotConstantsIntoTheDeep.InternalWebcamId pWebcamId,
                                      AprilTagUtils.AprilTagId pAprilTagId,
                                      AprilTagDetection pFtcDetectionData) {
             webcamId = pWebcamId;

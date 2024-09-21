@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.common.RobotConstants;
-import org.firstinspires.ftc.teamcode.common.RobotConstantsCurrentGame;
+import org.firstinspires.ftc.teamcode.common.RobotConstantsIntoTheDeep;
 
 @Autonomous(name = "Test", group = "TeamCode")
 //@Disabled
@@ -12,7 +12,7 @@ public class Test extends LinearOpMode {
 
     public void runOpMode() throws InterruptedException {
         FTCAutoDispatch.runAuto(RobotConstants.RunType.AUTONOMOUS,
-                RobotConstantsCurrentGame.OpMode.TEST,
+                RobotConstantsIntoTheDeep.OpMode.TEST,
                 RobotConstants.Alliance.NONE, this);
     }
 }
